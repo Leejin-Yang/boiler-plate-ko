@@ -11,17 +11,14 @@ const { User } = require("./models/User");
 app.use(express.urlencoded());
 app.use(express.json());
 
-const { MongoClient } = require("mongodb");
-const uri = config.mongoURI;
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-client.connect((err) => {
-  const collection = client.db("test").collection("devices");
-  // perform actions on the collection object
-  client.close();
-});
+const mongoose = require("mongoose");
+mongoose
+  .connect(config.mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("MongoDB Connected..."))
+  .catch((err) => console.log(err));
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
